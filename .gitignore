@@ -1,0 +1,9 @@
+# Ignore git configuration and files
+.git/
+.gitconfig
+
+# Ignore Visual Studio Code settings
+.vscode/
+
+# to be removed
+old_*
