@@ -13,15 +13,15 @@
 
 - Without menu:
 
-`$ docker run --rm -v $(pwd):/dl servufi/video-downloader <URL>`
+`$ docker run --rm -v $(pwd):/dl servufi/video-downloader "<URL>"`
 
 - Without menu and target size 13MB:
 
-`$ docker run --rm -v $(pwd):/dl servufi/video-downloader <URL> 13M`
+`$ docker run --rm -v $(pwd):/dl servufi/video-downloader "<URL>" 13M`
 
-- Without menu list of URL's and random target size (downloads synchronously):
+- Without menu, list URL's and some target sizes (downloads and encodes asynchronously):
 
-`$ docker run --rm -v $(pwd):/dl servufi/video-downloader <URL> <URL> 13M <URL> 4M <URL>`
+`$ docker run --rm -v $(pwd):/dl servufi/video-downloader "<URL>" "<URL>" 13M "<URL>" 4M "<URL>"`
 
 `$(pwd)` is save directory (from where command is executed). You can replace that with your own path, but `:/dl` (path within container) is must for script.
 Windows users would use backslashes `-v C:\Users\user\Desktop\downloads:/dl`.
@@ -39,6 +39,6 @@ machine twitter login "user name" "pass word"
 
 and if 2FA is required try to pass verification code for each URL:
 
-`$ docker run --rm -v $(pwd):/dl servufi/video-downloader <URL> 13M ver!ficationc0d3`
+`$ docker run --rm -v $(pwd):/dl servufi/video-downloader "<URL>" 13M ver!ficationc0d3`
 
-`$ docker run --rm -v $(pwd):/dl servufi/video-downloader <URL> ver!ficationc0d3`
+`$ docker run --rm -v $(pwd):/dl servufi/video-downloader "<URL>" ver!ficationc0d3`
