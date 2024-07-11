@@ -19,7 +19,7 @@ def usage() -> str:
   Powered by: yt-dlp, ffmpeg, docker.. :)
 
 Tip:
-  - docker run --rm -v /home/user/dl:/dl servufi/video-downloader url1 url2 9.5M url3
+  - docker run --rm -v /home/user/dl:/dl servufi/video-downloader "url1" "url2" 9.5M "url3"
 
 Size formats: 5000K / 5.6M / 1G
 Input format: <URL> (size) ...
@@ -173,7 +173,7 @@ class Downloader:
         audio_bitrate = subprocess.check_output(
             ["ffprobe", "-v", "error", "-select_streams", "a:0", "-show_entries", "stream=bit_rate", "-of", "default=noprint_wrappers=1:nokey=1", input_file]
         ).decode().strip()
-        audio_bitrate = int(audio_bitrate) if audio_bitrate != "N/A" else 192000
+        audio_bitrate = int(audio_bitrate) if audio_bitrate != "N/A" else 320000
 
         # Check current file size
         video_size_bits = os.path.getsize(input_file) * 8
@@ -182,7 +182,7 @@ class Downloader:
             return
 
         # Calculate total bitrate needed
-        container_overhead = 0.05
+        container_overhead = 0.01 # 1%
         container_bits = target_size_bits * container_overhead
         total_bitrate = (target_size_bits-container_bits) // duration
 
@@ -216,7 +216,7 @@ class Downloader:
             "ffmpeg", "-y", "-i", input_file,
             "-b:v", str(selected_video_bitrate),
             "-maxrate:v", str(selected_video_bitrate),
-            "-bufsize:v", str(target_size_bits // 20),
+            "-bufsize:v", str(selected_video_bitrate * 2),
             "-b:a", str(selected_audio_bitrate),
             "-progress", "pipe:1",
             output_file
