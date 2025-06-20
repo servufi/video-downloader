@@ -5,5 +5,8 @@
 # Ignore Visual Studio Code settings
 .vscode/
 
+# Ignore Rust build files
+target/
+
 # to be removed
 old_*

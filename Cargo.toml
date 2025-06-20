@@ -1,0 +1,11 @@
+[package]
+name = "video-downloader"
+version = "0.1.0"
+edition = "2021"
+
+[dependencies]
+chrono = "0.4.41"
+ctrlc = "3.4.7"
+once_cell = "1.21.3"
+rayon = "1.10.0"
+rustyline = "16"
