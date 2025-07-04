@@ -11,10 +11,12 @@ RUN wget -O yt-dlp https://github.com/yt-dlp/yt-dlp/releases/latest/download/yt-
     && chmod +x yt-dlp
 
 # Download static ffmpeg build
-RUN wget -O ffmpeg.tar.xz https://johnvansickle.com/ffmpeg/builds/ffmpeg-git-amd64-static.tar.xz \
-    && mkdir ffmpeg-extract \
-    && tar -xf ffmpeg.tar.xz -C ffmpeg-extract --strip-components=1
-
+# RUN wget -O ffmpeg.tar.xz https://johnvansickle.com/ffmpeg/builds/ffmpeg-git-amd64-static.tar.xz \
+#     && mkdir ffmpeg-extract \
+#     && tar -xf ffmpeg.tar.xz -C ffmpeg-extract --strip-components=1
+COPY ffmpeg.tar.xz ./
+RUN mkdir ffmpeg-extract && \
+    tar -xf ffmpeg.tar.xz -C ffmpeg-extract --strip-components=1
 
 # Copy Cargo project
 COPY Cargo.toml .

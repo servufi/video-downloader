@@ -9,7 +9,50 @@ on:
     - cron: '5 3 * * 5'  # Every Friday at 03:05 UTC
 
 jobs:
+  download-ffmpeg:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Get ffmpeg checksum
+        id: ffmpeg
+        run: |
+          curl -fsSL https://johnvansickle.com/ffmpeg/builds/ffmpeg-git-amd64-static.tar.xz.md5 > ffmpeg.md5
+          echo "md5=$(cut -d ' ' -f1 ffmpeg.md5)" >> $GITHUB_OUTPUT
+
+      - name: Restore ffmpeg.tar.xz from cache
+        uses: actions/cache@v3
+        id: cache-ffmpeg
+        with:
+          path: ffmpeg.tar.xz
+          key: ffmpeg-${{ steps.ffmpeg.outputs.md5 }}
+
+      - name: Download ffmpeg if not cached
+        if: steps.cache-ffmpeg.outputs.cache-hit != 'true'
+        run: |
+          url="https://johnvansickle.com/ffmpeg/builds/ffmpeg-git-amd64-static.tar.xz"
+          for i in {1..6}; do
+            echo "[Attempt $i] Downloading ffmpeg..."
+            if curl -fSL "$url" -o ffmpeg.tar.xz; then
+              echo "Download succeeded"
+              break
+            fi
+            if [ "$i" -lt 6 ]; then
+              delay=$((300 * i)) 
+              echo "Download failed. Waiting $delay seconds..."
+              sleep "$delay"
+            else
+              echo "All attempts failed"
+              exit 1
+            fi
+          done
+
+      - name: Upload ffmpeg tarball as artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: ffmpeg-tarball
+          path: ffmpeg.tar.xz
+  
   build:
+    needs: download-ffmpeg
     runs-on: ubuntu-latest
 
     steps:
