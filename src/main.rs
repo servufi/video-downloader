@@ -112,7 +112,9 @@ fn reencode_video(input_path: &str, target_size_str: &str) {
     let duration: f64 = match duration_out {
         Ok(out) if out.status.success() => {
             let dur_str = String::from_utf8_lossy(&out.stdout).trim().to_string();
-            println!("[DEBUG] Duration string: {}", dur_str);
+            if DEBUG {
+                println!("[DEBUG] Duration string: {}", dur_str);
+            }
             dur_str.parse().unwrap_or(0.0)
         }
         Ok(out) => {

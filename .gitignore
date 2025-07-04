@@ -10,6 +10,3 @@ target/
 
 # to be removed
 old_*
-
-# https://johnvansickle.com/ffmpeg/builds/ffmpeg-git-amd64-static.tar.xz
-*.xz
