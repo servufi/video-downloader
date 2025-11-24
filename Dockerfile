@@ -69,7 +69,7 @@ RUN git clone --branch release/7.1 --depth=1 https://github.com/FFmpeg/FFmpeg.gi
   make install
 
 # Stage 2: rust-builder
-FROM rust:1.87-alpine AS rust-builder
+FROM rust:1.88-alpine AS rust-builder
 WORKDIR /build
 
 # Install build dependencies
