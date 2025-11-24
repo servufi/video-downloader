@@ -82,5 +82,5 @@ Supported input formats:
 
 - Already converted cookies.txt files like from yt-dlp CLI directly ([`More info`](https://github.com/yt-dlp/yt-dlp/wiki/FAQ#how-do-i-pass-cookies-to-yt-dlp))
 
-At runtime, this `/dl/cookies.txt` -file should be auto-converted to Netscape format.
+At runtime, `/dl/cookies.txt` -file auto-converts to Netscape format.
 

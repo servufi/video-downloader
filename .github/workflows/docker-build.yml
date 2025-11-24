@@ -44,10 +44,11 @@ jobs:
           password: ${{ secrets.DOCKER_PASSWORD }}
 
       - name: Build and push image
-        uses: docker/build-push-action@v5
+        uses: docker/build-push-action@v6
         with:
           context: .
           push: true
           tags: servufi/video-downloader:latest
           cache-from: type=gha
           cache-to: type=gha,mode=max
+          github-token: ${{ secrets.GITHUB_TOKEN }}
