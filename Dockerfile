@@ -20,7 +20,8 @@ RUN apk add --no-cache \
   x264-dev \
   dav1d-dev \
   libogg-dev libogg-static \
-  libvorbis-dev libvorbis-static
+  libvorbis-dev libvorbis-static\
+  zlib
 
 # Build dav1d
 RUN git clone --depth=1 https://code.videolan.org/videolan/dav1d.git && \
@@ -76,7 +77,7 @@ WORKDIR /build
 RUN apk add --no-cache wget musl-dev
 
 # Download yt-dlp binary
-RUN wget -O yt-dlp https://github.com/yt-dlp/yt-dlp/releases/latest/download/yt-dlp_linux \
+RUN wget -O yt-dlp https://github.com/yt-dlp/yt-dlp/releases/latest/download/yt-dlp_musllinux \
   && chmod +x yt-dlp
 
 # Copy Cargo project
@@ -96,6 +97,11 @@ FROM scratch
 # Copy built ffmpeg + ffprobe
 COPY --from=ffmpeg-builder /build/FFmpeg/ffmpeg /ffmpeg
 COPY --from=ffmpeg-builder /build/FFmpeg/ffprobe /ffprobe
+
+# Copy musl runtime libs for yt-dlp_musllinux from ffmpeg-builder stage
+COPY --from=ffmpeg-builder /lib/ld-musl-x86_64.so.1 /lib/
+COPY --from=ffmpeg-builder /lib/libc.musl-x86_64.so.1 /lib/
+COPY --from=ffmpeg-builder /usr/lib/libz.so.1 /lib/
 
 # Copy dirs
 COPY --from=rust-builder /tmp-root /tmp
